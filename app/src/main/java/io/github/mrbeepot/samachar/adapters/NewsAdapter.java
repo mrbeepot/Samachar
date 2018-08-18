@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.github.mrbeepot.samachar.R;
+import io.github.mrbeepot.samachar.listeners.NewsOnClickListener;
 import io.github.mrbeepot.samachar.newsapi.model.Article;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
@@ -43,6 +45,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 .load(article.getUrlToImage())
                 .apply(new RequestOptions().placeholder(R.drawable.rubber_duck))
                 .into(holder.image);
+        holder.linearLayout.setOnClickListener(new NewsOnClickListener(this.context,article.getUrl()));
     }
 
     @Override
@@ -53,11 +56,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         ImageView image;
-
+        LinearLayout linearLayout;
         public ViewHolder(View v) {
             super(v);
             titleTextView = (TextView)v.findViewById(R.id.row_news_title);
             image = (ImageView)v.findViewById(R.id.row_news_image);
+            linearLayout = (LinearLayout)v.findViewById(R.id.news_linear_layout);
         }
     }
 }

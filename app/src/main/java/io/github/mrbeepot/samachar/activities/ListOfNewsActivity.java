@@ -5,12 +5,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -69,6 +71,7 @@ public class ListOfNewsActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
 
     }
@@ -92,9 +95,10 @@ public class ListOfNewsActivity extends AppCompatActivity {
 
 
     private class SectionPageAdapter extends FragmentPagerAdapter {
-
+        private FragmentManager fm;
         public SectionPageAdapter(FragmentManager fm) {
             super(fm);
+            this.fm = fm;
         }
 
         @Override
@@ -111,6 +115,16 @@ public class ListOfNewsActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return getResources().getStringArray(R.array.news_categories)[position];
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = getItem(position);
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.add(container.getId(),fragment);
+            transaction.commit();
+            return fragment;
+
         }
     }
 
